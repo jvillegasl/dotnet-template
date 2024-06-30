@@ -52,6 +52,9 @@ end_of_line = lf
 [*.{cmd,bat}]
 end_of_line = crlf
 
+[Makefile]
+indent_style = tab
+
 # C# files
 [*.cs]
 dotnet_analyzer_diagnostic.category-Style.severity = error
@@ -229,3 +232,9 @@ dotnet_diagnostic.IDE0008.severity = none
 
 # IDE0058: Expression value is never used
 dotnet_diagnostic.IDE0058.severity = none
+
+# IDE0130: Namespace does not match folder structure
+dotnet_diagnostic.IDE0130.severity = error
+
+# IDE0130: Namespace does not match folder structure
+dotnet_style_namespace_match_folder = true
