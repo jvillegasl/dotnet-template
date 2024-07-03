@@ -1,0 +1,48 @@
+version: '3.5'
+services:
+  # _sqlserver:
+  #   container_name: _sqlserver
+  #   image: mcr.microsoft.com/mssql/server:2022-latest
+  #   ports:
+  #     - 1433:1433
+  #   env_file: "docker.env"
+  #   environment:
+  #     - ACCEPT_EULA=Y
+  #     - MSSQL_SA_PASSWORD=${SA_PASSWORD}
+  #   healthcheck:
+  #     test:
+  #       [
+  #         "CMD-SHELL",
+  #         "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${SA_PASSWORD} -Q 'SELECT 1' || exit 1"
+  #       ]
+  #     interval: 10s
+  #     retries: 10
+  #     start_period: 10s
+  #     timeout: 3s
+
+  # sqlserver.configurator:
+  #   image: mcr.microsoft.com/mssql/server:2022-latest
+  #   volumes:
+  #     - ./docker/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+  #   depends_on:
+  #     sqlserver:
+  #       condition: service_healthy
+  #   command: >
+  #     bash -c ' /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P ${SA_PASSWORD} -d ${DB_NAME} -i docker-entrypoint-initdb.d/init.sql; echo "All done!";'
+
+  sqlserver:
+    container_name: sqlserver
+    build:
+      context: ./.docker/db/
+      args:
+        ACCEPT_EULA: Y
+        SA_PASSWORD: ${SA_PASSWORD}
+        DB_NAME: ${DB_NAME}
+        DB_USERNAME: ${DB_USERNAME}
+        DB_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - 1433:1433
+    volumes:
+      - "/var/opt/mssql/data/"
+      - "/var/opt/mssql/log/"
+      - "/var/opt/mssql/secrets/"

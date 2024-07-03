@@ -5,3 +5,9 @@ secrets:
 migrations:
 	dotnet ef database update
 
+db:
+	docker-compose --env-file docker.env up sqlserver
+
+db-force:
+	docker-compose --env-file docker.env up --build sqlserver
+
